@@ -1,0 +1,48 @@
+#include<stdio.h>
+#include<string.h>
+int failure[10];
+void fail(char *pat)
+{ failure[0]=-1;
+int i,j,n=strlen(pat);
+for(j=1;j<n;j++)
+{
+i=failure[j-1];
+while(pat[j]!=pat[i+1]&&i>=0)
+i=failure[i];
+if(pat[j]==pat[i+1])
+failure[j]=i+1;
+else
+failure[j]=-1;
+}}
+int pmatch(char *str,char *pat)
+{
+int i=0,j=0;
+int temp=strlen(pat),lens=strlen(str);
+while(i<lens&&j<temp)
+{ if(str[i]==pat[j])
+{ i++;j++;}
+else if(j==0)
+i++;
+else
+j=failure[j-1]+1;
+}
+return((j==temp)?(i-temp+1):0);
+}
+void main()
+{char str[10],pat[10];
+int a,b;
+printf("enter the string\n");
+gets(str);
+printf("enter the pattern to find\n");
+gets(pat);
+fail(pat);
+a=pmatch(str,pat);
+if(a)
+{
+printf("the pattern is foundat %d position\n",a);
+}
+else
+{
+printf("pattern not found");
+}
+}⁠⁠⁠⁠

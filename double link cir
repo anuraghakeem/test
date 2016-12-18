@@ -1,0 +1,112 @@
+#include <stdio.h>
+#include<stdlib.h>
+typedef struct node
+{
+    struct node* llink;
+    int data;
+    struct node* rlink;
+}node;
+
+struct node* head;
+
+void addend(int item)
+{
+    struct node *temp;
+    temp=malloc(sizeof(*temp));
+    temp->data=item;
+    temp->rlink=head;
+    temp->llink=head->llink;
+    head->llink->rlink=temp;
+    head->llink=temp;
+}
+
+void addbeg(int item)
+{
+    struct node *temp;
+    temp=malloc(sizeof(*temp));
+    temp->data=item;
+    temp->llink=head;
+    temp->rlink=head->rlink;
+    head->rlink->llink=temp;
+    head->rlink=temp;
+}
+
+int del(int item)
+{
+    struct node *temp,*trail;
+    temp=malloc(sizeof(*temp));
+    temp=head;
+    temp=temp->rlink;
+    while(temp!=head)
+    {
+        if(item==temp->data)
+        {
+            trail=temp->llink;
+            trail->rlink=temp->rlink;
+            temp->rlink->llink=trail;
+            free(temp);
+        }
+        temp=temp->rlink;
+
+    }
+}
+
+
+void printfwd()
+{
+    struct node *temp;
+    temp=malloc(sizeof(*temp));
+    printf("list in forward direction is \n");
+    for(temp=head->rlink;temp!=head;temp=temp->rlink)
+        printf("%d\t",temp->data);
+    printf("\n");
+
+}
+
+
+void printrev()
+{
+    struct node *temp;
+    temp=malloc(sizeof(*temp));
+    printf("list in reverse direction is \n");
+    for(temp=head->llink;temp!=head;temp=temp->llink)
+        printf("%d\t",temp->data);
+    printf("\n");
+
+}
+int main()
+{
+    head=malloc(sizeof(*head));
+    head->rlink=head;
+    head->llink=head;
+    int op,key;
+
+    while(1)
+    {
+        printf("1. add at beginning\n2.add at end\n3.delete a node\n4.display in forward direction\n5.display in reverse direction\n6.exit\n");
+        scanf("%d",&op);
+        switch(op)
+        {
+        case 1: printf("enter the data\n");
+                scanf("%d",&key);
+                addbeg(key);
+                break;
+
+        case 2: printf("enter the data\n");
+                scanf("%d",&key);
+                addend(key);
+                break;
+        case 3: printf("enter the data of the node to be deleted\n");
+                scanf("%d",&key);
+                del(key);
+                break;
+        case 4: printfwd();
+                break;
+        case 5: printrev();
+                break;
+        case 6: exit(0);
+                break;
+
+}
+}
+}

@@ -1,0 +1,60 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct{
+int r,c,v;
+}term;
+
+void transpose(term a[],term t[]){
+int rt[10],sp[10];
+int i,j,numcols=a[0].c, numterms=a[0].v;
+t[0].r=a[0].c;
+t[0].c=a[0].r;
+t[0].v=a[0].v;
+if(numterms>0){
+    for(i=0;i<numcols;i++)
+        rt[i]=0;
+    for(i=1;i<=numterms;i++){
+        rt[a[i].c]++;
+    }
+    sp[0]=1;
+    for(i=1;i<numcols;i++){
+        sp[i]=sp[i-1]+rt[i-1];
+    }
+    for(i=1;i<numterms;i++){
+        j=sp[a[i].c]++;
+        t[j].r=a[i].c;
+        t[j].c=a[i].r;
+        t[j].v=a[i].v;
+    }
+}
+printf("\nTranspose is:\nrow\tcol\tval\nt[0].r\tt[0].c\tt[o].val");
+for(i=1;i<=t[0].v;i++)
+    printf("%d\t%d\t%d\n",t[i].r,t[i].c,t[i].v);
+}
+
+int main(void){
+term a[20],t[20];
+int row,col,n,m,count=0,val,i;
+printf("Enter number of rows and columns\n");
+scanf("%d%d",&row,&col);
+a[0].r=row;
+a[0].c=col;
+printf("Enter elements of matrix:\n");
+for(n=0;n<row;n++)
+for(m=0;m<col;m++){
+    scanf("%d",&val);
+    if(val!=0){
+        count++;
+        a[count].r=n;
+        a[count].c=m;
+        a[count].v=val;
+    }
+}
+a[0].v=count;
+printf("\nsparse matrix is:\nrow\tcol\tvalue\n");
+for(i=0;i<=count;i++){
+    printf("%d\t%d\t%d\n",a[i].r,a[i].c,a[i].v);
+}
+transpose(a,t);
+}
